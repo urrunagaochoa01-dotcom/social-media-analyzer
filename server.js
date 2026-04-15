@@ -1,6 +1,6 @@
 const express = require('express');
-const nodemailer = require('nodemailer');
 const https = require('https');
+const nodemailer = require('nodemailer');
 
 const app = express();
 app.use(express.json({ limit: '50mb' }));
@@ -44,7 +44,7 @@ CONTEXTO DE LA CREADORA:
 - Arquetipo emocional: Sofisticada, sensible, femenina, elegante, vulnerable pero fuerte, resiliente
 - Estética: Clean aesthetic, wellness lifestyle, beauty minimal, elegancia femenina con un giro inesperado
 - Audiencia objetivo: Mujeres que quieren cuidarse, verse bien y sentirse bien, pero viven una vida exigente
-- Historia central: reconstrucción personal, maternidad sola, crecimiento emocional y económico, volver a empezar
+- Historia central: reconstrucción personal, maternidad sola, crecimiento emocional y económico
 
 PILARES DE CONTENIDO:
 1. BEAUTY: tips de belleza alineados a alimentación y bienestar
@@ -53,13 +53,8 @@ PILARES DE CONTENIDO:
 4. VIRAL / CONVERSACIÓN PÚBLICA: temas en tendencia, temas polémicos, opinión, cultura digital
 
 FORMATOS QUE USA:
-- Video hablado orgánico (primer plano / plano medio)
-- Video con texto y música
-- Video hablado con sobreposiciones
-- Video con voz en off
-- Video con pantalla verde
-- Transiciones
-- Carrusel / plano general
+- Video hablado orgánico, Video con texto y música, Video con sobreposiciones
+- Video con voz en off, Video con pantalla verde, Transiciones, Carrusel
 
 OBJETIVO: Aumentar visualizaciones, engagement y seguidores.`;
 
@@ -69,47 +64,35 @@ OBJETIVO: Aumentar visualizaciones, engagement y seguidores.`;
 ${brandContext}
 
 CONTEXTO DE TIKTOK:
-- El algoritmo de TikTok prioriza: retención del video, shares y tiempo de visualización
-- El contenido llega principalmente a NO seguidores (FYP - For You Page)
-- Lo que más viraliza: hooks fuertes en los primeros 2-3 segundos, contenido que genera conversación, trends con giro personal
-- Métricas clave en TikTok: views, shares, comentarios, ratio de retención
-- El tono exitoso en TikTok: más espontáneo, raw, auténtico, directo
-- Los sonidos y trends son clave para el alcance
+- Algoritmo prioriza: retención, shares y tiempo de visualización
+- Contenido llega principalmente a NO seguidores (FYP)
+- Tono exitoso: espontáneo, raw, auténtico, directo
+- Métricas clave: views, shares, comentarios, retención
 
-Analiza estos ${data.length} posts reales de TikTok de Andrea y genera un informe estratégico:
+Analiza estos ${data.length} posts reales de TikTok y genera un informe estratégico:
 
----
 1. 🏆 TOP 5 VIDEOS MÁS EXITOSOS EN TIKTOK
-Para cada uno: tema, pilar, formato, métricas (views/likes/comentarios/shares) y POR QUÉ funcionó en el algoritmo de TikTok.
+Para cada uno: tema, pilar, formato, métricas y POR QUÉ funcionó.
 
 2. 📊 QUÉ PILAR FUNCIONA MEJOR EN TIKTOK
-Compara Beauty vs Wellness vs Mamá/Emocional vs Viral. ¿Cuál genera más views? ¿Cuál genera más shares (clave para viralizarse)?
+Beauty vs Wellness vs Mamá/Emocional vs Viral. ¿Cuál genera más views y shares?
 
 3. 🎬 QUÉ FORMATO DE VIDEO FUNCIONA MEJOR EN TIKTOK
-¿Video hablado orgánico, con texto y música, voz en off, transiciones? Basado en los datos reales.
 
-4. 🎣 QUÉ HOOKS (APERTURAS) FUNCIONAN MEJOR
-Analiza los primeros segundos de los videos más vistos. ¿Qué tipo de apertura genera más retención?
+4. 🎣 QUÉ HOOKS FUNCIONAN MEJOR
+¿Qué tipo de apertura genera más retención?
 
-5. 💬 QUÉ TEMAS GENERAN MÁS CONVERSACIÓN EN TIKTOK
-Ordena los temas de mayor a menor engagement. ¿Qué genera más comentarios y shares?
+5. 💬 QUÉ TEMAS GENERAN MÁS CONVERSACIÓN
+Ordena de mayor a menor engagement.
 
 6. 📅 MEJORES DÍAS Y HORARIOS PARA PUBLICAR EN TIKTOK
 
-7. 🚀 3 IDEAS CONCRETAS PARA SUBIR ESTA SEMANA EN TIKTOK
-Cada idea debe incluir:
-- Tema exacto del video
-- Formato recomendado
-- Hook de apertura sugerido (primeras palabras del video)
-- Por qué va a funcionar en el algoritmo de TikTok
-- Adaptación para Instagram: cómo modificar este mismo contenido para que funcione en Instagram Reels
+7. 🚀 3 IDEAS CONCRETAS PARA ESTA SEMANA EN TIKTOK
+Cada idea debe incluir: tema exacto, formato, hook de apertura, por qué va a funcionar, y cómo adaptarlo para Instagram.
 
 8. ⚠️ QUÉ EVITAR EN TIKTOK
-Qué tipo de contenido tiene bajo rendimiento y por qué.
 
-Datos de los posts: ${JSON.stringify(data.slice(0, 50))}
-
-Sé muy específica, accionable y basada en los datos reales. Andrea es una profesional.`;
+Datos: ${JSON.stringify(data.slice(0, 50))}`;
   }
 
   if (platform === 'Instagram') {
@@ -118,54 +101,39 @@ Sé muy específica, accionable y basada en los datos reales. Andrea es una prof
 ${brandContext}
 
 CONTEXTO DE INSTAGRAM:
-- El algoritmo de Instagram prioriza: saves, comentarios significativos y tiempo en el post
-- El contenido llega principalmente a SEGUIDORES existentes (menos alcance orgánico a nuevos)
-- Lo que más crece en Instagram: Reels con alta retención, carruseles que se guardan, contenido que fideliza
-- Métricas clave en Instagram: saves (la métrica más valiosa), comentarios, shares por DM, alcance en Reels
-- El tono exitoso en Instagram: más cuidado, estético, aspiracional pero auténtico
-- La estética visual importa más que en TikTok
-- Los carruseles generan más saves y son ideales para contenido de valor
+- Algoritmo prioriza: saves, comentarios significativos y tiempo en el post
+- Contenido llega principalmente a seguidores existentes
+- Tono exitoso: más cuidado, estético, aspiracional pero auténtico
+- Métricas clave: saves (la más valiosa), comentarios, shares por DM, alcance en Reels
+- Los carruseles generan más saves
 
-Analiza estos ${data.length} posts reales de Instagram de Andrea y genera un informe estratégico:
+Analiza estos ${data.length} posts reales de Instagram y genera un informe estratégico:
 
----
 1. 🏆 TOP 5 POSTS MÁS EXITOSOS EN INSTAGRAM
-Para cada uno: tema, pilar, formato (reel/carrusel/foto), métricas y POR QUÉ funcionó en Instagram.
+Para cada uno: tema, pilar, formato, métricas y POR QUÉ funcionó.
 
 2. 📊 QUÉ PILAR FUNCIONA MEJOR EN INSTAGRAM
-Compara Beauty vs Wellness vs Mamá/Emocional vs Viral. ¿Cuál genera más saves? ¿Cuál genera más comentarios significativos?
+Beauty vs Wellness vs Mamá/Emocional vs Viral. ¿Cuál genera más saves y comentarios?
 
 3. 🎬 QUÉ FORMATO FUNCIONA MEJOR EN INSTAGRAM
-¿Reels, carruseles, fotos? ¿Video hablado, con texto y música, voz en off? Basado en datos reales.
+¿Reels, carruseles, fotos? ¿Qué estilo de video?
 
 4. 💾 QUÉ CONTENIDO GENERA MÁS SAVES
-Los saves son la métrica más importante en Instagram. ¿Qué tipo de contenido de Andrea la gente guarda?
 
 5. 💬 QUÉ TEMAS GENERAN MÁS ENGAGEMENT EN INSTAGRAM
-Ordena los temas de mayor a menor engagement. ¿Qué genera más comentarios y conversación?
 
 6. 📅 MEJORES DÍAS Y HORARIOS PARA PUBLICAR EN INSTAGRAM
 
-7. 🚀 3 IDEAS CONCRETAS PARA SUBIR ESTA SEMANA EN INSTAGRAM
-Cada idea debe incluir:
-- Tema exacto del contenido
-- Formato recomendado (Reel/carrusel/foto)
-- Hook o primera línea sugerida
-- Por qué va a funcionar en el algoritmo de Instagram
-- Adaptación desde TikTok: si este contenido viene de TikTok, cómo adaptarlo para que funcione en Instagram
+7. 🚀 3 IDEAS CONCRETAS PARA ESTA SEMANA EN INSTAGRAM
+Cada idea: tema exacto, formato, primera línea/hook, por qué va a funcionar, y cómo viene adaptado desde TikTok si aplica.
 
-8. 🔄 CONTENIDO GANADOR DE TIKTOK QUE DEBERÍA REPUBLICAR EN INSTAGRAM
-Basado en los posts más exitosos, ¿cuáles deberían adaptarse para Instagram y cómo?
+8. 🔄 CONTENIDO GANADOR DE TIKTOK QUE DEBERÍA REPUBLICAR EN INSTAGRAM Y CÓMO ADAPTARLO
 
 9. ⚠️ QUÉ EVITAR EN INSTAGRAM
-Qué tipo de contenido tiene bajo rendimiento y por qué.
 
-Datos de los posts: ${JSON.stringify(data.slice(0, 50))}
-
-Sé muy específica, accionable y basada en los datos reales. Andrea es una profesional.`;
+Datos: ${JSON.stringify(data.slice(0, 50))}`;
   }
 
-  // Fallback genérico
   return `Analiza estos datos de ${platform} para @andreau.denegri y genera un informe de rendimiento en español. Datos: ${JSON.stringify(data.slice(0, 50))}`;
 }
 
@@ -182,12 +150,12 @@ async function analyzeWithClaude(data, platform) {
     },
     {
       model: 'claude-sonnet-4-5',
-      max_tokens: 4000,
+      max_tokens: 3000,
       messages: [{ role: 'user', content: getPrompt(data, platform) }]
     }
   );
 
-  console.log('Claude response preview:', JSON.stringify(result).slice(0, 300));
+  console.log('Claude response preview:', JSON.stringify(result).slice(0, 200));
 
   if (result && result.content && Array.isArray(result.content) && result.content.length > 0) {
     return result.content[0].text;
@@ -195,11 +163,11 @@ async function analyzeWithClaude(data, platform) {
   if (result && result.error) {
     throw new Error('Claude API error: ' + result.error.message);
   }
-  throw new Error('Unexpected Claude response: ' + JSON.stringify(result).slice(0, 200));
+  throw new Error('Unexpected response: ' + JSON.stringify(result).slice(0, 200));
 }
 
 async function sendEmail(subject, htmlContent) {
-  const transporter = nodemailer.createTransporter({
+  const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: CONFIG.EMAIL_USER,
@@ -232,7 +200,6 @@ app.post('/webhook', async (req, res) => {
   try {
     console.log('Webhook recibido de Apify');
     const { resource, eventType } = req.body;
-
     console.log('eventType:', eventType);
 
     if (eventType !== 'ACTOR.RUN.SUCCEEDED') {
@@ -267,7 +234,7 @@ app.post('/webhook', async (req, res) => {
     });
 
     await sendEmail(`📊 Informe ${platform} - ${date}`, analysis);
-    console.log('Informe enviado exitosamente');
+    console.log('✅ Informe enviado exitosamente');
     res.json({ status: 'success' });
 
   } catch (error) {
