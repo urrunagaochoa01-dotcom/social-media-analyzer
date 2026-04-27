@@ -37,104 +37,159 @@ async function httpRequest(url, options = {}, body = null) {
 }
 
 function getPrompt(data, platform) {
+
+  // Videos excluidos del análisis orgánico
+  const EXCLUDED_TIKTOK = ['fusion water magic', 'hyaluronic', 'kativa', 'oleos capilares que probe'];
+  const EXCLUDED_INSTAGRAM = ['confirmen', 'bestfriend', 'bestie', '5 soles al que adivina'];
+
+  // Filtrar contenido pagado y collabs
+  const organicData = data.filter(p => {
+    const text = (p.text || p.caption || '').toLowerCase();
+    if (platform === 'TikTok') {
+      return !EXCLUDED_TIKTOK.some(kw => text.includes(kw));
+    }
+    if (platform === 'Instagram') {
+      return !EXCLUDED_INSTAGRAM.some(kw => text.includes(kw));
+    }
+    return true;
+  });
+
   const brandContext = `
-CONTEXTO DE LA CREADORA:
-- Nombre: Andrea Urrunaga (@andreau.denegri)
-- Identidad: Mamá luchadora, creadora de contenido, emprendedora, estratega de marketing
-- Arquetipo emocional: Sofisticada, sensible, femenina, elegante, vulnerable pero fuerte, resiliente
-- Estética: Clean aesthetic, wellness lifestyle, beauty minimal, elegancia femenina con un giro inesperado
-- Audiencia objetivo: Mujeres que quieren cuidarse, verse bien y sentirse bien, pero viven una vida exigente
-- Historia central: reconstrucción personal, maternidad sola, crecimiento emocional y económico
+CREADORA: Andrea Urrunaga (@andreau.denegri)
+Estratega digital, community manager y creadora de contenido. Fundadora de Raya Studio.
+Bilingüe español/inglés. Mamá soltera. Lima, Perú.
+Arquetipo: sofisticada, sensible, femenina, elegante, vulnerable pero fuerte, resiliente.
+Audiencia objetivo: mujeres que quieren cuidarse, verse bien y sentirse bien, pero viven una vida exigente.
 
 PILARES DE CONTENIDO:
-1. BEAUTY: tips de belleza alineados a alimentación y bienestar
-2. WELLNESS: tips de alimentación y bienestar del cuerpo
-3. MAMÁ / REFLEXIÓN EMOCIONAL: maternidad, crecimiento personal, introspección, vulnerabilidad
-4. VIRAL / CONVERSACIÓN PÚBLICA: temas en tendencia, temas polémicos, opinión, cultura digital
+1. BEAUTY (pilar principal)
+   - Pelo, skincare, makeup
+   - Wellness cuando se cruza con cuidado natural de piel o pelo — van de la mano
+   - Es el pilar que más atrae marcas y colaboraciones pagas
+   - Fórmula ganadora: hook visual/emocional en 0-2 seg + producto específico o técnica concreta + Andrea protagonista + resultado prometido
 
-FORMATOS QUE USA:
-- Video hablado orgánico, Video con texto y música, Video con sobreposiciones
-- Video con voz en off, Video con pantalla verde, Transiciones, Carrusel
+2. MAMÁ (pilar secundario)
+   - Maternidad, momentos con Matilda
+   - Con toque de reflexión emocional — van integrados, no son categorías separadas
 
-OBJETIVO: Aumentar visualizaciones, engagement y seguidores.`;
+NOTA: Viral/actualidad no es un pilar — es contenido esporádico que aparece de vez en cuando con temas de actualidad relevantes.
+
+FORMATOS DE VIDEO (identificados por hashtag al final del caption):
+- #fmt_hablado — video hablado directo a cámara
+- #fmt_textmusic — video con texto y música, sin hablar
+- #fmt_voiceover — voz en off sobre imágenes o acciones
+- #fmt_greenscreen — pantalla verde con imagen de fondo
+- #fmt_tutorial — pasos con resultado final visible
+- #fmt_hookvisual — hook visual inesperado en primeros 0.5 seg + texto encima
+- #fmt_trend — trend o audio viral con versión propia
+- #fmt_opinion — opinión rápida 15-25 seg
+- #fmt_story — storytelling personal antes del tip o producto
+- #fmt_carrusel — slides con texto e imágenes (Instagram)
+
+CONTENIDO EXCLUIDO DEL ANÁLISIS ORGÁNICO:
+TikTok — pauta activada por marca: Fusion Water Magic, Hyaluronic, oleos Kativa
+Instagram — collabs que no son de Andrea: "Confirmen #bestfriend", "5 soles al que adivina"
+
+NOTA: Los datos ya vienen filtrados. Total de posts orgánicos analizados: ${organicData.length} de ${data.length} totales.`;
 
   if (platform === 'TikTok') {
-    return `Eres un estratega de contenido digital experto en crecimiento en TikTok para marcas personales femeninas.
+    return `Eres un estratega de contenido digital experto en TikTok para marcas personales de beauty.
 
 ${brandContext}
 
 CONTEXTO DE TIKTOK:
 - Algoritmo prioriza: retención, shares y tiempo de visualización
 - Contenido llega principalmente a NO seguidores (FYP)
-- Tono exitoso: espontáneo, raw, auténtico, directo
-- Métricas clave: views, shares, comentarios, retención
+- Métricas clave: views, shares, saves, comentarios
+- El hook en los primeros 2 segundos determina todo
+- El storytelling dentro del video de beauty es clave — no solo hook + tip
 
-Analiza estos ${data.length} posts reales de TikTok y genera un informe estratégico:
+Analiza estos ${organicData.length} posts orgánicos de TikTok y genera un informe estratégico en español:
 
-1. 🏆 TOP 5 VIDEOS MÁS EXITOSOS EN TIKTOK
-Para cada uno: tema, pilar, formato, métricas y POR QUÉ funcionó.
+1. 🏆 TOP 5 VIDEOS MÁS EXITOSOS
+Para cada uno: tema, pilar, formato (#fmt_ si aparece), métricas exactas (views/likes/shares/saves/comentarios), duración, y análisis detallado de POR QUÉ funcionó — hook, estructura, tema, timing.
 
-2. 📊 QUÉ PILAR FUNCIONA MEJOR EN TIKTOK
-Beauty vs Wellness vs Mamá/Emocional vs Viral. ¿Cuál genera más views y shares?
+2. ⚠️ BOTTOM 5 VIDEOS CON MENOR RENDIMIENTO
+Para cada uno: métricas, y análisis detallado de POR QUÉ no funcionó y qué habría que cambiar.
 
-3. 🎬 QUÉ FORMATO DE VIDEO FUNCIONA MEJOR EN TIKTOK
+3. 📊 RENDIMIENTO POR PILAR
+Compara Beauty vs Mamá. ¿Cuál genera más views? ¿Cuál genera más shares? ¿Cuál más saves?
 
-4. 🎣 QUÉ HOOKS FUNCIONAN MEJOR
-¿Qué tipo de apertura genera más retención?
+4. 🎬 RENDIMIENTO POR FORMATO
+Si hay hashtags #fmt_ en los captions, analiza qué formato funciona mejor. Si no hay, analiza por la duración y el tipo de contenido descrito en el caption.
 
-5. 💬 QUÉ TEMAS GENERAN MÁS CONVERSACIÓN
-Ordena de mayor a menor engagement.
+5. 🎣 PATRONES DE HOOK QUE FUNCIONAN
+¿Qué tipo de apertura generó más retención? ¿Pattern interrupt visual, auditivo, pregunta directa, advertencia?
 
-6. 📅 MEJORES DÍAS Y HORARIOS PARA PUBLICAR EN TIKTOK
+6. 📅 MEJORES DÍAS Y HORARIOS PARA PUBLICAR
+Basado en los posts con mejor rendimiento.
 
 7. 🚀 3 IDEAS CONCRETAS PARA ESTA SEMANA EN TIKTOK
-Cada idea debe incluir: tema exacto, formato, hook de apertura, por qué va a funcionar, y cómo adaptarlo para Instagram.
+Cada idea debe incluir:
+- Tema exacto del video
+- Formato recomendado (#fmt_)
+- Hook de apertura sugerido (primeras palabras o acción visual)
+- Por qué va a funcionar basado en los datos
+- Cómo adaptarlo para Instagram
 
-8. ⚠️ QUÉ EVITAR EN TIKTOK
+8. 🔄 TENDENCIA VS MES ANTERIOR
+Si hay datos de períodos distintos, ¿está creciendo o cayendo el rendimiento?
 
-Datos: ${JSON.stringify(data.slice(0, 50))}`;
+Datos orgánicos: ${JSON.stringify(organicData.slice(0, 50))}
+
+Sé muy específica, accionable y basada en los datos reales. Cada recomendación debe tener base en los números.`;
   }
 
   if (platform === 'Instagram') {
-    return `Eres un estratega de contenido digital experto en crecimiento en Instagram para marcas personales femeninas.
+    return `Eres un estratega de contenido digital experto en Instagram para marcas personales.
 
 ${brandContext}
 
 CONTEXTO DE INSTAGRAM:
 - Algoritmo prioriza: saves, comentarios significativos y tiempo en el post
-- Contenido llega principalmente a seguidores existentes
-- Tono exitoso: más cuidado, estético, aspiracional pero auténtico
-- Métricas clave: saves (la más valiosa), comentarios, shares por DM, alcance en Reels
-- Los carruseles generan más saves
+- Contenido llega principalmente a seguidores existentes — la audiencia ya conoce a Andrea
+- Métricas clave: saves (la más valiosa), likes, comentarios, alcance en Reels
+- La audiencia de Instagram sigue a Andrea principalmente por Mamá/vida real
+- El beauty en Instagram funciona mejor anclado a su historia personal — no como tip genérico
+- Formato ganador: video corto con texto y música (aspiracional) o voz en off — NO hablado directo a cámara
+- Los carruseles generan más saves que los videos
 
-Analiza estos ${data.length} posts reales de Instagram y genera un informe estratégico:
+Analiza estos ${organicData.length} posts orgánicos de Instagram y genera un informe estratégico en español:
 
 1. 🏆 TOP 5 POSTS MÁS EXITOSOS EN INSTAGRAM
-Para cada uno: tema, pilar, formato, métricas y POR QUÉ funcionó.
+Para cada uno: tema, pilar, formato, métricas exactas, y análisis detallado de POR QUÉ funcionó.
 
-2. 📊 QUÉ PILAR FUNCIONA MEJOR EN INSTAGRAM
-Beauty vs Wellness vs Mamá/Emocional vs Viral. ¿Cuál genera más saves y comentarios?
+2. ⚠️ BOTTOM 5 POSTS CON MENOR RENDIMIENTO
+Para cada uno: métricas y análisis de POR QUÉ no funcionó.
 
-3. 🎬 QUÉ FORMATO FUNCIONA MEJOR EN INSTAGRAM
-¿Reels, carruseles, fotos? ¿Qué estilo de video?
+3. 📊 RENDIMIENTO POR PILAR
+Beauty vs Mamá. ¿Cuál genera más saves? ¿Cuál más likes? ¿Cuál más comentarios?
 
 4. 💾 QUÉ CONTENIDO GENERA MÁS SAVES
+Los saves son la métrica más importante en Instagram. ¿Qué tipo de contenido de Andrea la gente guarda?
 
-5. 💬 QUÉ TEMAS GENERAN MÁS ENGAGEMENT EN INSTAGRAM
+5. 🎬 RENDIMIENTO POR FORMATO
+¿Reels, carruseles, fotos? ¿Texto y música, voz en off, hablado? ¿Qué funciona mejor?
 
 6. 📅 MEJORES DÍAS Y HORARIOS PARA PUBLICAR EN INSTAGRAM
 
 7. 🚀 3 IDEAS CONCRETAS PARA ESTA SEMANA EN INSTAGRAM
-Cada idea: tema exacto, formato, primera línea/hook, por qué va a funcionar, y cómo viene adaptado desde TikTok si aplica.
+Cada idea debe incluir:
+- Tema exacto
+- Formato recomendado
+- Hook o primera línea sugerida
+- Por qué va a funcionar en Instagram
+- Si viene adaptado de TikTok, cómo se adaptó
 
-8. 🔄 CONTENIDO GANADOR DE TIKTOK QUE DEBERÍA REPUBLICAR EN INSTAGRAM Y CÓMO ADAPTARLO
+8. 🔄 CONTENIDO DE TIKTOK QUE DEBERÍA REPUBLICAR EN INSTAGRAM
+¿Qué tipos de video de TikTok funcionarían bien adaptados a Instagram y cómo?
 
-9. ⚠️ QUÉ EVITAR EN INSTAGRAM
+Datos orgánicos: ${JSON.stringify(organicData.slice(0, 50))}
 
-Datos: ${JSON.stringify(data.slice(0, 50))}`;
+Sé muy específica, accionable y basada en los datos reales.`;
   }
 
-  return `Analiza estos datos de ${platform} para @andreau.denegri y genera un informe de rendimiento en español. Datos: ${JSON.stringify(data.slice(0, 50))}`;
+  return `Analiza estos datos de ${platform} para @andreau.denegri y genera un informe de rendimiento en español. Datos: ${JSON.stringify(organicData.slice(0, 50))}`;
 }
 
 async function analyzeWithClaude(data, platform) {
@@ -176,20 +231,20 @@ async function sendEmail(subject, htmlContent) {
   });
 
   await transporter.sendMail({
-    from: `"Social Media Analyzer" <${CONFIG.EMAIL_USER}>`,
+    from: `"Raya Studio Analytics" <${CONFIG.EMAIL_USER}>`,
     to: CONFIG.EMAIL_TO,
     subject: subject,
     html: `
       <div style="font-family: Georgia, serif; max-width: 800px; margin: 0 auto; padding: 30px; background: #fafaf8;">
         <h1 style="color: #2c2c2c; font-size: 24px; border-bottom: 2px solid #d4a89a; padding-bottom: 10px;">
-          📊 Informe Semanal — @andreau.denegri
+          📊 Informe de Redes Sociales
         </h1>
-        <p style="color: #888; font-size: 13px;">Generado automáticamente por Claude AI</p>
+        <p style="color: #888; font-size: 13px;">Generado automáticamente por Raya Studio Analytics · Claude AI</p>
         <div style="background: white; padding: 25px; border-radius: 8px; margin-top: 20px; line-height: 1.8; color: #333; white-space: pre-wrap;">
           ${htmlContent.replace(/\n/g, '<br>').replace(/---/g, '<hr style="border: 1px solid #eee;">')}
         </div>
         <p style="color: #bbb; font-size: 11px; margin-top: 20px; text-align: center;">
-          Generado automáticamente usando Apify + Claude AI
+          Raya Studio · @andreau.denegri · Powered by Apify + Claude AI
         </p>
       </div>
     `
@@ -226,14 +281,14 @@ app.post('/webhook', async (req, res) => {
       return res.json({ status: 'no data' });
     }
 
-    console.log(`Analizando ${data.length} posts de ${platform} con Claude...`);
+    console.log(`Analizando posts de ${platform} con Claude...`);
     const analysis = await analyzeWithClaude(data, platform);
 
     const date = new Date().toLocaleDateString('es-PE', {
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
 
-    await sendEmail(`📊 Informe ${platform} - ${date}`, analysis);
+    await sendEmail(`📊 Informe ${platform} · ${date}`, analysis);
     console.log('✅ Informe enviado exitosamente');
     res.json({ status: 'success' });
 
@@ -244,8 +299,8 @@ app.post('/webhook', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.json({ status: 'Servidor activo', webhook_url: '/webhook' });
+  res.json({ status: 'Raya Studio Analytics · activo', webhook_url: '/webhook' });
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+app.listen(PORT, () => console.log(`Raya Studio Analytics corriendo en puerto ${PORT}`));
